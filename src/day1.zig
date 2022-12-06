@@ -19,14 +19,8 @@ pub fn day1(allocator: std.mem.Allocator, input: []const u8) !void {
     }
 
     var cals = calories.items;
-    const S = struct {
-        fn lessThan(context: void, a: u32, b: u32) bool {
-            _ = context;
-            return std.math.order(a, b) == .gt; //invert the normal less than so we get biggest first
-        }
-    };
 
-    std.sort.sort(u32, cals, {}, S.lessThan);
+    std.sort.sort(u32, cals, {}, std.sort.desc(u32));
     var stdout = std.io.getStdOut().writer();
     try stdout.print("total:\t\t{}\ntop 3 total:\t{}\n", .{ cals[0], cals[0] + cals[1] + cals[2] });
 }
