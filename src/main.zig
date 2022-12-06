@@ -11,6 +11,7 @@ const days = [_]*const fn (std.mem.Allocator, []const u8) anyerror!void{
     @import("day3.zig").day3Part2,
     @import("day4.zig").day4,
     @import("day5.zig").day5,
+    @import("day6.zig").day6,
 };
 
 pub fn main() !void {
