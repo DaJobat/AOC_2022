@@ -14,6 +14,7 @@ const days = [_]*const fn (std.mem.Allocator, []const u8) anyerror!void{
     @import("day6.zig").day6,
     @import("day7.zig").day7,
     @import("day8.zig").day8,
+    @import("day9.zig").day9,
 };
 
 pub fn main() !void {
@@ -26,17 +27,29 @@ pub fn main() !void {
         return;
     }
 
+    var day: u32 = 0;
     if (args.next()) |num_str| {
-        const day = try std.fmt.parseInt(u32, num_str, 10);
+        day = try std.fmt.parseInt(u32, num_str, 10);
         if (day == 0 or days.len < day) {
             return error.InvalidDayError;
         }
+    } else return error.MissingDayArgument;
 
-        const input_fname = try std.fmt.allocPrint(allocator, "{}.input", .{day});
-        const data = try std.fs.cwd().readFileAlloc(allocator, input_fname, 1_000_000_000);
-        defer allocator.free(data);
-        allocator.free(input_fname);
-        const dayFn = days[day - 1];
-        try dayFn(allocator, data);
-    } else return error.InvalidArgument;
+    var is_test = false;
+    if (args.next()) |test_str| {
+        if (std.mem.eql(u8, test_str, "test")) is_test = true;
+    }
+
+    var input_fname: []const u8 = undefined;
+    if (is_test) {
+        input_fname = try std.fmt.allocPrint(allocator, "{}.test.input", .{day});
+    } else {
+        input_fname = try std.fmt.allocPrint(allocator, "{}.input", .{day});
+    }
+
+    const data = try std.fs.cwd().readFileAlloc(allocator, input_fname, 1_000_000_000);
+    defer allocator.free(data);
+    allocator.free(input_fname);
+    const dayFn = days[day - 1];
+    try dayFn(allocator, data);
 }
