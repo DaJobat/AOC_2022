@@ -14,6 +14,10 @@ pub fn build(b: *std.build.Builder) void {
     const exe = b.addExecutable("aoc", "src/main.zig");
     exe.setTarget(target);
     exe.setBuildMode(mode);
+    exe.addPackage(.{
+        .name = "sliderule",
+        .source = .{ .path = "sliderule/export.zig" },
+    });
     exe.install();
 
     const run_cmd = exe.run();
