@@ -14,3 +14,13 @@ pub fn count(buf: []const u8, comptime item: u8) usize {
     }
     return total;
 }
+
+pub fn tokensToSlice(comptime Element: type, allocator: std.mem.Allocator, tokens: []const Element, sep: []const Element) ![][]const Element {
+    var iter = std.mem.tokenize(Element, tokens, sep);
+    var list = std.ArrayList([]const Element).init(allocator);
+    errdefer list.deinit();
+    while (iter.next()) |item| {
+        try list.append(item);
+    }
+    return list.toOwnedSlice();
+}

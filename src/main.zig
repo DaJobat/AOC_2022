@@ -16,6 +16,8 @@ const days = [_]*const fn (std.mem.Allocator, []const u8) anyerror!void{
     @import("day8.zig").day8,
     @import("day9.zig").day9,
     @import("day10.zig").day10,
+    @import("day11.zig").day11,
+    @import("day12.zig").day12,
 };
 
 pub fn main() !void {
@@ -43,9 +45,9 @@ pub fn main() !void {
 
     var input_fname: []const u8 = undefined;
     if (is_test) {
-        input_fname = try std.fmt.allocPrint(allocator, "{}.test.input", .{day});
+        input_fname = try std.fmt.allocPrint(allocator, "input/{}.test.input", .{day});
     } else {
-        input_fname = try std.fmt.allocPrint(allocator, "{}.input", .{day});
+        input_fname = try std.fmt.allocPrint(allocator, "input/{}.input", .{day});
     }
 
     const data = try std.fs.cwd().readFileAlloc(allocator, input_fname, 1_000_000_000);
