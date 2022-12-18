@@ -66,8 +66,9 @@ pub fn day7(allocator: std.mem.Allocator, input: []const u8) !void {
     }
 
     var sizes_list = std.ArrayList(usize).init(allocator);
+    defer sizes_list.deinit();
     _ = root.dir.size(&sizes_list);
-    var sizes = sizes_list.toOwnedSlice();
+    var sizes = try sizes_list.toOwnedSlice();
     std.sort.sort(usize, sizes, {}, std.sort.asc(usize));
 
     const max_size = 70_000_000;

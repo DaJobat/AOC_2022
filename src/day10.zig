@@ -20,6 +20,7 @@ pub fn day10(ally: std.mem.Allocator, input: []const u8) !void {
     var states = std.ArrayList(State).init(ally);
     defer states.deinit();
     var instruction_list = std.ArrayList(Instruction).init(ally);
+    defer instruction_list.deinit();
 
     var lines = std.mem.tokenize(u8, input, "\n");
     while (lines.next()) |line| {
@@ -30,7 +31,7 @@ pub fn day10(ally: std.mem.Allocator, input: []const u8) !void {
         });
     }
 
-    const instructions = instruction_list.toOwnedSlice();
+    const instructions = try instruction_list.toOwnedSlice();
     defer ally.free(instructions);
 
     var x_reg: isize = 1;

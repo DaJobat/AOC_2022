@@ -10,6 +10,7 @@ pub fn day5(allocator: std.mem.Allocator, input: []const u8) !void {
 
     var b_lines = std.mem.splitBackwards(u8, stacks_input, "\n");
     var pos_list = std.ArrayList(usize).init(allocator);
+    defer pos_list.deinit();
     var stack_pos_line = b_lines.next().?; //overengineering, yay! get positions from last line of stack diagram
     for (stack_pos_line) |c, i| {
         switch (c) {
@@ -18,7 +19,7 @@ pub fn day5(allocator: std.mem.Allocator, input: []const u8) !void {
         }
     }
 
-    const stack_poses = pos_list.toOwnedSlice();
+    const stack_poses = try pos_list.toOwnedSlice();
     defer allocator.free(stack_poses);
 
     var stacks = try allocator.alloc(Stack, stack_poses.len);
